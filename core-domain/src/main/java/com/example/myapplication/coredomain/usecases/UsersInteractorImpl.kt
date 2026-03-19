@@ -4,6 +4,9 @@ import com.example.myapplication.coredomain.api.UsersAnalytics
 import com.example.myapplication.coredomain.api.UsersInteractor
 import com.example.myapplication.coredomain.api.UsersRepository
 import com.example.myapplication.coredomain.models.User
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,6 +34,14 @@ class UsersInteractorImpl @Inject constructor(
     // эта функция проводит фильтрацию пользователей и оставляет только активных
     override fun filterOnlyActiveUsers(users: List<User>): List<User> {
         return users.filter { user -> user.isActive && validateUser(user) }
+    }
+
+    // эта функция вычисляет дату регистрации
+    override fun calculateRegistrationDate(user: User): Int {
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val regDate = dateFormat.parse(user.registrationDate)
+        val diff = Date().time - (regDate?.time ?: 0)
+        return (diff / (365L * 24 * 60 * 60 * 1000)).toInt()
     }
 
     // эта функция проводит проверку пользователя

@@ -5,5 +5,6 @@ data class UserVO(
     val name: String,
     val email: String,
     val registrationDate: String,
-    val isActive: Boolean
+    val isActive: Boolean,
+    val displayName: String
 )

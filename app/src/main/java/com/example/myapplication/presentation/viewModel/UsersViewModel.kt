@@ -14,90 +14,78 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class UsersViewModel(
-    private val interactor: UsersInteractor
+    private val interactor: UsersInteractor,
+    private val userToUserVOMapper: UserToUserVOMapper
 ) : ViewModel() {
 
     private val _screenState: MutableStateFlow<UiState> =
-        MutableStateFlow(UiState.Initial())
+        MutableStateFlow(
+            UiState.Initial(
+                data = UsersContent(
+                    allUsers = emptyList(),
+                    showOnlyActive = false
+                )
+            )
+        )
     val screenState: StateFlow<UiState> = _screenState
 
     private val _events: MutableSharedFlow<UiEvent> = MutableSharedFlow()
     val events: SharedFlow<UiEvent> = _events
 
-    private var loadedUsers: List<UserVO> = listOf()
-    private var showOnlyActive: Boolean = false
-
     // эта функция загружает пользователей
     fun loadUsers() {
+        val currentContent = _screenState.value.data
+
         _screenState.value = UiState.Loading(
-            data = UsersContent(
-                users = loadedUsers,
-                showOnlyActive = showOnlyActive
-            )
+            data = currentContent
         )
+
         viewModelScope.launch {
             try {
-                loadedUsers = interactor.loadUsers().map { UserToUserVOMapper.map(it) }
-
-                val displayUsers = if (showOnlyActive) filterActiveUsers() else loadedUsers
+                val loadedUsers = interactor.loadUsers().map { userToUserVOMapper.map(it) }
 
                 _screenState.value = UiState.Content(
-                    data = UsersContent(
-                        users = displayUsers,
-                        showOnlyActive = showOnlyActive
+                    data = currentContent.copy(
+                        allUsers = loadedUsers
                     )
                 )
             } catch (e: Exception) {
                 _screenState.value = UiState.Error(
                     message = "Error: ${e.message}",
-                    data = UsersContent(
-                        users = loadedUsers,
-                        showOnlyActive = showOnlyActive
-                    )
+                    data = currentContent
                 )
             }
+        }
+    }
+
+    // эта функция решает каких пользователей вернуть
+    fun visibleUsers(content: UsersContent): List<UserVO> {
+        return if (content.showOnlyActive) {
+            getOnlyActiveUsers(content.allUsers)
+        } else {
+            content.allUsers
         }
     }
 
     // эта функция выполняет действие при клике на чекбокс "Показывать только активных пользователей"
     fun onOnlyActiveUsersCheckBoxClicked(value: Boolean) {
-        _screenState.value.data?.let {
-            val newUsers = if (value) {
-                filterActiveUsers()
-            } else {
-                loadedUsers
-            }
+        val newContent = UsersContent(
+            allUsers = _screenState.value.data.allUsers,
+            showOnlyActive = value
+        )
 
-            val newUsersContent = UsersContent(
-                users = newUsers,
-                showOnlyActive = value
+        when (_screenState.value) {
+            is UiState.Initial -> _screenState.value = UiState.Initial(data = newContent)
+            is UiState.Error -> _screenState.value = UiState.Error(
+                message = (_screenState.value as UiState.Error).message,
+                data = newContent
             )
 
-            _screenState.value = when (_screenState.value) {
-                is UiState.Initial -> UiState.Initial(data = newUsersContent)
-                is UiState.Loading -> UiState.Loading(data = newUsersContent)
-                is UiState.Error -> UiState.Error(
-                    message = (_screenState.value as UiState.Error).message,
-                    data = newUsersContent
-                )
-
-                is UiState.Content -> UiState.Content(data = newUsersContent)
-            }
-
-            showOnlyActive = value
+            is UiState.Content -> _screenState.value = UiState.Content(data = newContent)
+            else -> {}
         }
-    }
-
-    // эта функция фильтрует активных пользователей
-    private fun filterActiveUsers(): List<UserVO> {
-        val domainUsers = loadedUsers.map { UserVOToUserMapper.map(it) }
-        val filteredUsers = interactor.filterOnlyActiveUsers(domainUsers)
-        return filteredUsers.map { UserToUserVOMapper.map(it) }
     }
 
     // эта функция выполняет действие при клике на карточку пользователя
@@ -105,7 +93,7 @@ class UsersViewModel(
         interactor.sendLogs(UserVOToUserMapper.map(user))
         interactor.saveUser(user.id)
 
-        val age = calculateRegistrationDate(user)
+        val age = interactor.calculateRegistrationDate(UserVOToUserMapper.map(user))
         viewModelScope.launch {
             _events.emit(UiEvent.ShowToast(age.toString()))
         }
@@ -113,17 +101,16 @@ class UsersViewModel(
         _screenState.value = UiState.Content(
             selectedUser = user,
             data = UsersContent(
-                users = loadedUsers,
-                showOnlyActive = showOnlyActive,
+                allUsers = _screenState.value.data.allUsers,
+                showOnlyActive = _screenState.value.data.showOnlyActive,
             )
         )
     }
 
-    // эта функция вычисляет дату регистрации
-    private fun calculateRegistrationDate(user: UserVO): Int {
-        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-        val regDate = dateFormat.parse(user.registrationDate)
-        val diff = Date().time - (regDate?.time ?: 0)
-        return (diff / (365L * 24 * 60 * 60 * 1000)).toInt()
+    // эта функция возвращает только активных пользователей
+    private fun getOnlyActiveUsers(users: List<UserVO>): List<UserVO> {
+        val domainUsers = users.map { UserVOToUserMapper.map(it) }
+        val filteredUsers = interactor.filterOnlyActiveUsers(domainUsers)
+        return filteredUsers.map { userToUserVOMapper.map(it) }
     }
 }

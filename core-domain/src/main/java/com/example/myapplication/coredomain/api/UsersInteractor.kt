@@ -7,4 +7,5 @@ interface UsersInteractor {
     fun saveUser(id: Int)
     fun sendLogs(user: User)
     fun filterOnlyActiveUsers(users: List<User>): List<User>
+    fun calculateRegistrationDate(user: User): Int
 }

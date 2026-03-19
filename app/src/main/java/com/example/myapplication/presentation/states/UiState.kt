@@ -2,18 +2,18 @@ package com.example.myapplication.presentation.states
 
 import com.example.myapplication.presentation.models.UserVO
 
-sealed class UiState(open val data: UsersContent?) {
+sealed class UiState(open val data: UsersContent) {
     data class Initial(
-        override val data: UsersContent? = null
+        override val data: UsersContent
     ) : UiState(data)
 
     data class Loading(
-        override val data: UsersContent? = null
+        override val data: UsersContent
     ) : UiState(data)
 
     data class Error(
         val message: String,
-        override val data: UsersContent? = null
+        override val data: UsersContent
     ) : UiState(data)
 
     data class Content(
@@ -23,6 +23,6 @@ sealed class UiState(open val data: UsersContent?) {
 }
 
 data class UsersContent(
-    val users: List<UserVO>,
+    val allUsers: List<UserVO>,
     val showOnlyActive: Boolean
 )
