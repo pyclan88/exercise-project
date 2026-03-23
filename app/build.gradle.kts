@@ -59,9 +59,6 @@ dependencies {
     // Dagger
     implementation(libs.google.dagger)
     ksp(libs.google.dagger.compiler)
-
-    // core-domain module
-    implementation(project(":core-domain"))
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

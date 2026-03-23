@@ -1,9 +1,9 @@
-package com.example.myapplication.coredomain.usecases
+package com.example.myapplication.domain.usecases
 
-import com.example.myapplication.coredomain.api.UsersAnalytics
-import com.example.myapplication.coredomain.api.UsersInteractor
-import com.example.myapplication.coredomain.api.UsersRepository
-import com.example.myapplication.coredomain.models.User
+import com.example.myapplication.domain.api.UsersAnalytics
+import com.example.myapplication.domain.api.UsersInteractor
+import com.example.myapplication.domain.api.UsersRepository
+import com.example.myapplication.domain.models.User
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

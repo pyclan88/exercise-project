@@ -1,7 +1,7 @@
 package com.example.myapplication.presentation.mappers
 
 import com.example.myapplication.R
-import com.example.myapplication.coredomain.models.User
+import com.example.myapplication.domain.models.User
 import com.example.myapplication.presentation.models.UserVO
 import com.example.myapplication.presentation.resources.ResourceProvider
 import javax.inject.Inject

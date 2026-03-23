@@ -2,7 +2,7 @@ package com.example.myapplication.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.coredomain.api.UsersInteractor
+import com.example.myapplication.domain.api.UsersInteractor
 import com.example.myapplication.presentation.mappers.UserToUserVOMapper
 import javax.inject.Inject
 

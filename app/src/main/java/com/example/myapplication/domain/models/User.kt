@@ -1,4 +1,4 @@
-package com.example.myapplication.coredomain.models
+package com.example.myapplication.domain.models
 
 data class User(
     val id: Int,
