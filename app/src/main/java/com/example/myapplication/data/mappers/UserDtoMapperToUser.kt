@@ -1,6 +1,6 @@
 package com.example.myapplication.data.mappers
 
-import com.example.myapplication.coredomain.models.User
+import com.example.myapplication.domain.models.User
 import com.example.myapplication.data.models.UserDto
 
 object UserDtoMapperToUser {

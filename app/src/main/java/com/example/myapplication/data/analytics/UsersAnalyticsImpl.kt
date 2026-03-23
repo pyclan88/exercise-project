@@ -1,7 +1,7 @@
 package com.example.myapplication.data.analytics
 
-import com.example.myapplication.coredomain.api.UsersAnalytics
-import com.example.myapplication.coredomain.models.User
+import com.example.myapplication.domain.api.UsersAnalytics
+import com.example.myapplication.domain.models.User
 import com.example.myapplication.data.mappers.UserToUserDtoMapper
 import java.util.Date
 import javax.inject.Inject

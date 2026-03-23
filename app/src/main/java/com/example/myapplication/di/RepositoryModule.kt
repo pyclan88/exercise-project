@@ -1,7 +1,7 @@
 package com.example.myapplication.di
 
-import com.example.myapplication.coredomain.api.UsersAnalytics
-import com.example.myapplication.coredomain.api.UsersRepository
+import com.example.myapplication.domain.api.UsersAnalytics
+import com.example.myapplication.domain.api.UsersRepository
 import com.example.myapplication.data.analytics.UsersAnalyticsImpl
 import com.example.myapplication.data.repository.UsersRepositoryImpl
 import dagger.Binds

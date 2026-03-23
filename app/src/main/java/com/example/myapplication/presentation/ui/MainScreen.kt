@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.presentation.models.UserVO
 import com.example.myapplication.presentation.states.UiState
 import com.example.myapplication.presentation.viewModel.UsersViewModel
 
@@ -37,6 +36,7 @@ fun MainScreen(
     viewModel: UsersViewModel,
 ) {
     val state by viewModel.screenState.collectAsState()
+    val usersToDisplay = viewModel.visibleUsers(state.data)
 
     Box(
         modifier = Modifier
@@ -60,7 +60,7 @@ fun MainScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Checkbox(
-                    checked = state.data?.showOnlyActive ?: false,
+                    checked = state.data.showOnlyActive,
                     onCheckedChange = { checked ->
                         viewModel.onOnlyActiveUsersCheckBoxClicked(checked)
                     }
@@ -96,9 +96,8 @@ fun MainScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-            val displayUsers = state.data?.users
 
-            if (displayUsers.isNullOrEmpty() && state !is UiState.Loading) {
+            if (usersToDisplay.isEmpty() && state !is UiState.Loading) {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
@@ -110,12 +109,12 @@ fun MainScreen(
                 }
             }
 
-            displayUsers?.let {
+            if (usersToDisplay.isNotEmpty()) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(displayUsers) { user ->
+                    items(usersToDisplay) { user ->
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -127,7 +126,7 @@ fun MainScreen(
                                 modifier = Modifier.padding(16.dp)
                             ) {
                                 Text(
-                                    text = formatStatus(user),
+                                    text = user.displayName,
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Medium
                                 )
@@ -172,9 +171,4 @@ fun MainScreen(
             }
         }
     }
-}
-
-private fun formatStatus(u: UserVO): String {
-    val status = if (u.isActive) "✓ Active" else "✗ Inactive"
-    return "${u.name} ($status)"
 }

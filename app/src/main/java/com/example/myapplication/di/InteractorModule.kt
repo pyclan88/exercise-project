@@ -1,7 +1,7 @@
 package com.example.myapplication.di
 
-import com.example.myapplication.coredomain.api.UsersInteractor
-import com.example.myapplication.coredomain.usecases.UsersInteractorImpl
+import com.example.myapplication.domain.api.UsersInteractor
+import com.example.myapplication.domain.usecases.UsersInteractorImpl
 import dagger.Binds
 import dagger.Module
 

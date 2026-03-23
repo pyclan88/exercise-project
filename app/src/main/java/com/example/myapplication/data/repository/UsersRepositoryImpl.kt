@@ -7,8 +7,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import androidx.core.content.edit
-import com.example.myapplication.coredomain.api.UsersRepository
-import com.example.myapplication.coredomain.models.User
+import com.example.myapplication.domain.api.UsersRepository
+import com.example.myapplication.domain.models.User
 import com.example.myapplication.data.mappers.UserDtoMapperToUser
 import javax.inject.Inject
 import javax.inject.Singleton
