@@ -1,11 +1,11 @@
-package com.example.myapplication.presentation.ui
+package com.example.myapplication
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.myapplication.App
-import com.example.myapplication.presentation.theme.AppTheme
+import com.example.myapplication.presentation.ui.MainScreenRoute
 import com.example.myapplication.presentation.viewModel.UsersViewModelFactory
+import com.example.myapplication.theme.AppTheme
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {

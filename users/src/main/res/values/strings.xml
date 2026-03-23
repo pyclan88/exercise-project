@@ -1,0 +1,4 @@
+<resources>
+    <string name="user_status_active">✓ Active</string>
+    <string name="user_status_inactive">✗ Inactive</string>
+</resources>

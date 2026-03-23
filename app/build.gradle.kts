@@ -59,7 +59,10 @@ dependencies {
     // Dagger
     implementation(libs.google.dagger)
     ksp(libs.google.dagger.compiler)
-    
+
+    // users module
+    implementation(project(":users"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
