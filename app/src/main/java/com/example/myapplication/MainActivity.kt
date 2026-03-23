@@ -3,9 +3,8 @@ package com.example.myapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.myapplication.presentation.ui.MainScreenRoute
-import com.example.myapplication.presentation.viewModel.UsersViewModelFactory
-import com.example.myapplication.theme.AppTheme
+import com.example.users.presentation.ui.MainScreenRoute
+import com.example.users.presentation.viewModel.UsersViewModelFactory
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +19,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                MainScreenRoute(usersViewModelFactory)
+                MainScreenRoute(
+                    usersViewModelFactory
+                )
             }
         }
     }

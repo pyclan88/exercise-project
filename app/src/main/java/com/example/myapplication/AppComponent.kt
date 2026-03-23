@@ -1,11 +1,11 @@
 package com.example.myapplication
 
 import android.content.Context
-import com.example.myapplication.di.ApplicationContext
-import com.example.myapplication.di.ContextModule
-import com.example.myapplication.di.InteractorModule
-import com.example.myapplication.di.RepositoryModule
-import com.example.myapplication.di.ResourcesModule
+import com.example.users.di.ApplicationContext
+import com.example.users.di.ContextModule
+import com.example.users.di.InteractorModule
+import com.example.users.di.RepositoryModule
+import com.example.users.di.ResourcesModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
