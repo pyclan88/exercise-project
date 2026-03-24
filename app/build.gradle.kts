@@ -61,7 +61,7 @@ dependencies {
     ksp(libs.google.dagger.compiler)
 
     // users module
-    implementation(project(":users"))
+    implementation(project(":feature-users"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

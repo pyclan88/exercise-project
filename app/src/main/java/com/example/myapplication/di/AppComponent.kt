@@ -1,6 +1,7 @@
-package com.example.myapplication
+package com.example.myapplication.di
 
 import android.content.Context
+import com.example.myapplication.presentation.ui.MainActivity
 import com.example.users.di.ApplicationContext
 import com.example.users.di.ContextModule
 import com.example.users.di.InteractorModule
