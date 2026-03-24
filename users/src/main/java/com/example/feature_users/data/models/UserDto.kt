@@ -1,0 +1,9 @@
+package com.example.feature_users.data.models
+
+data class UserDto(
+    val id: Int,
+    val name: String,
+    val email: String,
+    val registrationDate: String,
+    val isActive: Boolean
+)

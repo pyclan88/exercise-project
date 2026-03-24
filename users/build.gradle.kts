@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.users"
+    namespace = "com.example.feature_users"
     compileSdk {
         version = release(36)
     }

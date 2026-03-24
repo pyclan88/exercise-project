@@ -2,11 +2,11 @@ package com.example.myapplication.di
 
 import android.content.Context
 import com.example.myapplication.presentation.ui.MainActivity
-import com.example.users.di.ApplicationContext
-import com.example.users.di.ContextModule
-import com.example.users.di.InteractorModule
-import com.example.users.di.RepositoryModule
-import com.example.users.di.ResourcesModule
+import com.example.feature_users.di.ApplicationContext
+import com.example.feature_users.di.ContextModule
+import com.example.feature_users.di.InteractorModule
+import com.example.feature_users.di.RepositoryModule
+import com.example.feature_users.di.ResourcesModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
