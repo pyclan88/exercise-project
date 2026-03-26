@@ -3,24 +3,19 @@ package com.example.myapplication.presentation.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.myapplication.App
-import com.example.myapplication.presentation.theme.AppTheme
-import com.example.myapplication.presentation.viewModel.UsersViewModelFactory
-import javax.inject.Inject
+import com.example.myapplication.theme.AppTheme
+import com.example.feature_users.presentation.ui.UsersScreenRoute
 
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var usersViewModelFactory: UsersViewModelFactory
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as App).appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         setContent {
             AppTheme {
-                MainScreenRoute(usersViewModelFactory)
+                UsersScreenRoute(
+                    applicationContext
+                )
             }
         }
     }
