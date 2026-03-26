@@ -1,17 +1,23 @@
 package com.example.feature_users.presentation.ui
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.feature_users.di.DaggerUsersComponent
 import com.example.feature_users.presentation.viewModel.UsersViewModel
-import com.example.feature_users.presentation.viewModel.UsersViewModelFactory
 
 @Composable
-fun MainScreenRoute(usersViewModelFactory: UsersViewModelFactory) {
+fun UsersScreenRoute(context: Context) {
+    val usersComponent = remember(context) {
+        DaggerUsersComponent.factory().create(context)
+    }
 
-    val context = LocalContext.current
+    val usersViewModelFactory = remember(usersComponent) {
+        usersComponent.usersViewModelFactory()
+    }
 
     val viewModel: UsersViewModel = viewModel(
         factory = usersViewModelFactory
