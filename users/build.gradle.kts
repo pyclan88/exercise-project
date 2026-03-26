@@ -52,6 +52,9 @@ dependencies {
     implementation(libs.google.dagger)
     ksp(libs.google.dagger.compiler)
 
+    // feature-users-api module
+    implementation(project(":feature-users-api"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
