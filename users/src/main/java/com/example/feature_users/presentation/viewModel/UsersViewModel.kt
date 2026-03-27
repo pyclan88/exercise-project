@@ -24,7 +24,7 @@ class UsersViewModel(
         MutableStateFlow(
             UiState.Initial(
                 data = UsersContent(
-                    allUsers = emptyList(),
+                    users = emptyList(),
                     showOnlyActive = false
                 )
             )
@@ -34,9 +34,9 @@ class UsersViewModel(
     private val _events: MutableSharedFlow<UiEvent> = MutableSharedFlow()
     val events: SharedFlow<UiEvent> = _events
 
-    // эта функция загружает пользователей
-    fun loadUsers() {
-        val currentContent = _screenState.value.data
+    // эта функция решает каких пользователей загрузить
+    fun loadUsers(showOnlyActive: Boolean) {
+        val currentContent = _screenState.value.data.copy(showOnlyActive = showOnlyActive)
 
         _screenState.value = UiState.Loading(
             data = currentContent
@@ -44,11 +44,15 @@ class UsersViewModel(
 
         viewModelScope.launch {
             try {
-                val loadedUsers = interactor.loadUsers().map { userToUserVOMapper.map(it) }
+                val loadedUsers = if (showOnlyActive) {
+                    interactor.loadOnlyActiveUsers().map { userToUserVOMapper.map(it) }
+                } else {
+                    interactor.loadAllUsers().map { userToUserVOMapper.map(it) }
+                }
 
                 _screenState.value = UiState.Content(
                     data = currentContent.copy(
-                        allUsers = loadedUsers
+                        users = loadedUsers
                     )
                 )
             } catch (e: Exception) {
@@ -60,31 +64,19 @@ class UsersViewModel(
         }
     }
 
-    // эта функция решает каких пользователей вернуть
-    fun visibleUsers(content: UsersContent): List<UserVO> {
-        return if (content.showOnlyActive) {
-            getOnlyActiveUsers(content.allUsers)
-        } else {
-            content.allUsers
-        }
-    }
-
     // эта функция выполняет действие при клике на чекбокс "Показывать только активных пользователей"
-    fun onOnlyActiveUsersCheckBoxClicked(value: Boolean) {
+    fun onOnlyActiveUsersCheckBoxClicked(showOnlyActive: Boolean) {
         val newContent = UsersContent(
-            allUsers = _screenState.value.data.allUsers,
-            showOnlyActive = value
+            users = _screenState.value.data.users,
+            showOnlyActive = showOnlyActive
         )
 
         when (_screenState.value) {
             is UiState.Initial -> _screenState.value = UiState.Initial(data = newContent)
-            is UiState.Error -> _screenState.value = UiState.Error(
-                message = (_screenState.value as UiState.Error).message,
-                data = newContent
-            )
-
-            is UiState.Content -> _screenState.value = UiState.Content(data = newContent)
-            else -> {}
+            is UiState.Loading -> _screenState.value = UiState.Loading(data = newContent)
+            else -> {
+                loadUsers(showOnlyActive)
+            }
         }
     }
 
@@ -101,16 +93,9 @@ class UsersViewModel(
         _screenState.value = UiState.Content(
             selectedUser = user,
             data = UsersContent(
-                allUsers = _screenState.value.data.allUsers,
+                users = _screenState.value.data.users,
                 showOnlyActive = _screenState.value.data.showOnlyActive,
             )
         )
-    }
-
-    // эта функция возвращает только активных пользователей
-    private fun getOnlyActiveUsers(users: List<UserVO>): List<UserVO> {
-        val domainUsers = users.map { UserVOToUserMapper.map(it) }
-        val filteredUsers = interactor.filterOnlyActiveUsers(domainUsers)
-        return filteredUsers.map { userToUserVOMapper.map(it) }
     }
 }

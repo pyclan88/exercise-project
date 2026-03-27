@@ -1,4 +1,4 @@
-package com.example.feature_users.domain.usecases
+package com.example.feature_users.domain.interactor
 
 import com.example.feature_users.domain.api.UsersAnalytics
 import com.example.feature_users.domain.api.UsersInteractor
@@ -17,8 +17,13 @@ class UsersInteractorImpl @Inject constructor(
 ) : UsersInteractor {
 
     // эта функция загружает пользователей
-    override suspend fun loadUsers(): List<User> {
+    override suspend fun loadAllUsers(): List<User> {
         return repository.getUsers()
+    }
+
+    // эта функция проводит фильтрацию пользователей и оставляет только активных
+    override suspend fun loadOnlyActiveUsers(): List<User> {
+        return loadAllUsers().filter { user -> user.isActive && validateUser(user) }
     }
 
     // эта функция сохраняет пользователей
@@ -29,11 +34,6 @@ class UsersInteractorImpl @Inject constructor(
     // эта функция отправляет логи
     override fun sendLogs(user: User) {
         analytics.sendLogs(user)
-    }
-
-    // эта функция проводит фильтрацию пользователей и оставляет только активных
-    override fun filterOnlyActiveUsers(users: List<User>): List<User> {
-        return users.filter { user -> user.isActive && validateUser(user) }
     }
 
     // эта функция вычисляет дату регистрации

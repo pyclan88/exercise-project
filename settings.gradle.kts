@@ -23,3 +23,4 @@ rootProject.name = "My Application"
 include(":app")
 include(":feature-users")
 project(":feature-users").projectDir = file("users")
+include(":feature-users-api")
