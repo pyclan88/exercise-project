@@ -36,6 +36,8 @@ fun MainScreen(
     viewModel: UsersViewModel,
 ) {
     val state by viewModel.screenState.collectAsState()
+    val exerciseState by viewModel.exerciseState.collectAsState()
+    val usersToDisplay = viewModel.visibleUsers(state.data)
     val usersToDisplay = state.data.users
     val isShowOnlyActive = state.data.showOnlyActive
 
@@ -53,6 +55,34 @@ fun MainScreen(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                ButtonAndText(
+                    buttonLabel = "Simult\nContin",
+                    onClick = { viewModel.simultaneouslyContinueOnError() },
+                    result = exerciseState.simCon ?: "?"
+                )
+                ButtonAndText(
+                    buttonLabel = "Simult\nCancel",
+                    onClick = { viewModel.simultaneouslyCancelOnError() },
+                    result = exerciseState.simCan ?: "?"
+                )
+                ButtonAndText(
+                    buttonLabel = "Sequen\nContin",
+                    onClick = { viewModel.sequentiallyContinueOnError() },
+                    result = exerciseState.seqCon ?: "?"
+                )
+                ButtonAndText(
+                    buttonLabel = "Sequen\nCancel",
+                    onClick = { viewModel.sequentiallyCancelOnError() },
+                    result = exerciseState.seqCan ?: "?"
+                )
+            }
 
             Row(
                 modifier = Modifier
@@ -172,5 +202,21 @@ fun MainScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ButtonAndText(
+    buttonLabel: String,
+    onClick: () -> Unit,
+    result: String
+    ) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Button(
+            onClick = onClick,
+        ) {
+            Text(buttonLabel)
+        }
+        Text(result)
     }
 }
