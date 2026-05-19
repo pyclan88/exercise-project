@@ -38,6 +38,8 @@ fun MainScreen(
     val state by viewModel.screenState.collectAsState()
     val exerciseState by viewModel.exerciseState.collectAsState()
     val usersToDisplay = viewModel.visibleUsers(state.data)
+    val usersToDisplay = state.data.users
+    val isShowOnlyActive = state.data.showOnlyActive
 
     Box(
         modifier = Modifier
@@ -89,7 +91,8 @@ fun MainScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Checkbox(
-                    checked = state.data.showOnlyActive,
+                    checked = isShowOnlyActive,
+                    enabled = state !is UiState.Loading,
                     onCheckedChange = { checked ->
                         viewModel.onOnlyActiveUsersCheckBoxClicked(checked)
                     }
@@ -99,7 +102,7 @@ fun MainScreen(
 
             Button(
                 onClick = {
-                    viewModel.loadUsers()
+                    viewModel.loadUsers(isShowOnlyActive)
                 },
                 enabled = state !is UiState.Loading,
                 modifier = Modifier.fillMaxWidth()

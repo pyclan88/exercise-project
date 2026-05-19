@@ -1,7 +1,7 @@
 package com.example.feature_users.di
 
 import com.example.feature_users.domain.api.UsersInteractor
-import com.example.feature_users.domain.usecases.UsersInteractorImpl
+import com.example.feature_users.domain.interactor.UsersInteractorImpl
 import dagger.Binds
 import dagger.Module
 

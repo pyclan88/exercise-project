@@ -3,9 +3,9 @@ package com.example.feature_users.domain.api
 import com.example.feature_users.domain.models.User
 
 interface UsersInteractor {
-    suspend fun loadUsers(): List<User>
+    suspend fun loadAllUsers(): List<User>
+    suspend fun loadOnlyActiveUsers(): List<User>
     fun saveUser(id: Int)
     fun sendLogs(user: User)
-    fun filterOnlyActiveUsers(users: List<User>): List<User>
     fun calculateRegistrationDate(user: User): Int
 }

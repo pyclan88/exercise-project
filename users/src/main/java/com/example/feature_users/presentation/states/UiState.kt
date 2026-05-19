@@ -23,6 +23,6 @@ sealed class UiState(open val data: UsersContent) {
 }
 
 data class UsersContent(
-    val allUsers: List<UserVO>,
+    val users: List<UserVO>,
     val showOnlyActive: Boolean
 )

@@ -16,6 +16,7 @@ ksp = "2.0.21-1.0.27"
 jetbrainsKotlinJvm = "2.2.10"
 appcompat = "1.7.1"
 material = "1.13.0"
+runtime = "1.10.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,6 +40,7 @@ google-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "d
 google-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -60,8 +60,11 @@ dependencies {
     implementation(libs.google.dagger)
     ksp(libs.google.dagger.compiler)
 
-    // users module
+    // feature-users module
     implementation(project(":feature-users"))
+
+    // feature-users-api module
+    implementation(project(":feature-users-api"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
